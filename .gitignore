@@ -1,5 +1,5 @@
 *.pyc
 /__init__.py
 manage.py
-urls.py
+/urls.py
 settings.py
