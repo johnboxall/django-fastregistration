@@ -4,16 +4,18 @@ from django.test import TestCase
 from django.utils.translation import ugettext as _
 
 
-URL_PREFIX = '/account/'
+URL_PREFIX = '/'
 
 class ProfileTestCase(TestCase):
     """
     Test for managing profile information.
-    """        
+    """
+    urls = 'fastregistration.urls'
+    
     def setUp(self):
         self.user = User.objects.create_user('kegan@example.com', 'kegan@example.com', 'abcdefg')
         self.client.login(username='kegan@example.com', password='abcdefg')
-
+        
         self.user2 = User.objects.create_user('kegan2@example.com', 'kegan2@example.com', 'abcdefg')
     
     def test_get_profile(self):
@@ -40,7 +42,7 @@ class ProfileTestCase(TestCase):
             'current_password': 'abcdefg',
         }
         response = self.client.post(URL_PREFIX + 'profile/email/update/', inputs)
-
+        
         self.user = User.objects.get(pk=self.user.id)
         self.assertEquals(self.user.get_and_delete_messages()[0], _('Your email has been successfully updated.'))
         self.assertTrue(self.user.email == inputs['email1'])
@@ -61,7 +63,7 @@ class ProfileTestCase(TestCase):
         
         user = User.objects.get(pk=self.user.id)
         self.assertTrue(user.email == 'kegan@example.com')
-        
+    
     def test_update_profile_email_existing(self):
         """
         Update profile email with existing email by another user.

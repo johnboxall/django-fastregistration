@@ -3,12 +3,14 @@ from django.test import TestCase
 from django.utils.translation import ugettext as _
 
 
-URL_PREFIX = '/account/'
+URL_PREFIX = '/'
 
 class RegistrationTestCase(TestCase):
     """
     Test for registration.
     """
+    urls = 'fastregistration.urls'
+    
     def setUp(self):
         pass
     
@@ -29,11 +31,11 @@ class RegistrationTestCase(TestCase):
         }
         response = self.client.post(URL_PREFIX + 'register/', inputs)
         self.assertRedirects(response, URL_PREFIX + 'register/done/')
-
+        
         user = User.objects.get(email=inputs['email1'])
         self.assertEquals(user.username, inputs['email1'])
         self.assertEquals(user.email, inputs['email1'])
-        
+    
     def test_dissimilar_email(self):
         """
         Emails not consistent.
@@ -47,7 +49,7 @@ class RegistrationTestCase(TestCase):
         response = self.client.post(URL_PREFIX + 'register/', inputs)
         self.assertFormError(response, 'form', 'email2', _("The two email fields does not match."))
         self.assertTemplateUsed(response, 'registration/register.html')
-
+    
     def test_dissimilar_password(self):
         """
         Emails not consistent.
@@ -61,7 +63,7 @@ class RegistrationTestCase(TestCase):
         response = self.client.post(URL_PREFIX + 'register/', inputs)
         self.assertFormError(response, 'form', 'password2', _("The two password fields does not match."))
         self.assertTemplateUsed(response, 'registration/register.html')
-        
+    
     def test_email_existed(self):
         """
         Email used already existed in the system.
@@ -74,7 +76,7 @@ class RegistrationTestCase(TestCase):
         }
         response = self.client.post(URL_PREFIX + 'register/', inputs)
         self.assertRedirects(response, URL_PREFIX + 'register/done/')
-
+        
         user = User.objects.get(email=inputs['email1'])
         self.assertEquals(user.username, inputs['email1'])
         self.assertEquals(user.email, inputs['email1'])
@@ -83,6 +85,6 @@ class RegistrationTestCase(TestCase):
         response = self.client.post(URL_PREFIX + 'register/', inputs)
         self.assertFormError(response, 'form', 'email1', _("There is already a user with this email. You cannot use this email to register."))
         self.assertTemplateUsed(response, 'registration/register.html')
-            
+    
     def tearDown(self):
         pass
