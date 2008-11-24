@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 
-URL_PREFIX = '/'
-
 class LoginLogoutTestCase(TestCase):
     """
     Test for login logout.
@@ -18,7 +16,7 @@ class LoginLogoutTestCase(TestCase):
         """
         Access login page.
         """
-        response = self.client.get(URL_PREFIX + 'login/')
+        response = self.client.get('/login/')
         self.assertTemplateUsed(response, 'registration/login.html')
     
     def tearDown(self):

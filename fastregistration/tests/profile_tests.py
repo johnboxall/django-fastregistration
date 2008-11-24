@@ -4,8 +4,6 @@ from django.test import TestCase
 from django.utils.translation import ugettext as _
 
 
-URL_PREFIX = '/'
-
 class ProfileTestCase(TestCase):
     """
     Test for managing profile information.
@@ -22,14 +20,14 @@ class ProfileTestCase(TestCase):
         """
         Get profile page.
         """
-        response = self.client.get(URL_PREFIX + 'profile/')
+        response = self.client.get('/profile/')
         self.assertTemplateUsed(response, 'registration/profile.html')
     
     def test_get_profile_email_update(self):
         """
         Access profile email update page.
         """
-        response = self.client.get(URL_PREFIX + 'profile/email/update/')
+        response = self.client.get('/profile/email/update/')
         self.assertTemplateUsed(response, 'registration/profile_email_update.html')
     
     def test_update_profile_email(self):
@@ -41,12 +39,12 @@ class ProfileTestCase(TestCase):
             'email2': 'new_email@example.com',
             'current_password': 'abcdefg',
         }
-        response = self.client.post(URL_PREFIX + 'profile/email/update/', inputs)
+        response = self.client.post('/profile/email/update/', inputs)
         
         self.user = User.objects.get(pk=self.user.id)
         self.assertEquals(self.user.get_and_delete_messages()[0], _('Your email has been successfully updated.'))
         self.assertTrue(self.user.email == inputs['email1'])
-        self.assertRedirects(response, URL_PREFIX + 'profile/')
+        self.assertRedirects(response, '/profile/')
     
     def test_update_profile_email_dissimilar_email(self):
         """
@@ -57,7 +55,7 @@ class ProfileTestCase(TestCase):
             'email2': 'new_emailyyy@example.com',
             'current_password': 'abcdefg',
         }
-        response = self.client.post(URL_PREFIX + 'profile/email/update/', inputs)
+        response = self.client.post('/profile/email/update/', inputs)
         self.assertTemplateUsed(response, 'registration/profile_email_update.html')
         self.assertFormError(response, 'form', 'email2', "The two emails didn't match.")
         
@@ -73,7 +71,7 @@ class ProfileTestCase(TestCase):
             'email2': 'kegan2@example.com',
             'current_password': 'abcdefg',
         }
-        response = self.client.post(URL_PREFIX + 'profile/email/update/', inputs)
+        response = self.client.post('/profile/email/update/', inputs)
         self.assertTemplateUsed(response, 'registration/profile_email_update.html')
         self.assertFormError(response, 'form', 'email1', "There is already a user with this email. You cannot use this email to register.")
         
@@ -89,7 +87,7 @@ class ProfileTestCase(TestCase):
             'email2': 'new_email@example.com',
             'current_password': 'xxxxxx-invalid',
         }
-        response = self.client.post(URL_PREFIX + 'profile/email/update/', inputs)
+        response = self.client.post('/profile/email/update/', inputs)
         self.assertTemplateUsed(response, 'registration/profile_email_update.html')
         self.assertFormError(response, 'form', 'current_password', "The password is invalid.")
         
@@ -100,7 +98,7 @@ class ProfileTestCase(TestCase):
         """
         Access profile password update page.
         """
-        response = self.client.get(URL_PREFIX + 'profile/password/update/')
+        response = self.client.get('/profile/password/update/')
         self.assertTemplateUsed(response, 'registration/profile_password_update.html')
     
     def test_update_profile_password(self):
@@ -112,12 +110,12 @@ class ProfileTestCase(TestCase):
             'password2': '123456',
             'current_password': 'abcdefg',
         }
-        response = self.client.post(URL_PREFIX + 'profile/password/update/', inputs)
+        response = self.client.post('/profile/password/update/', inputs)
         
         self.user = User.objects.get(pk=self.user.id)
         self.assertEquals(self.user.get_and_delete_messages()[0], _('Your password has been successfully updated.'))
         self.assertTrue(self.user.check_password('123456'))
-        self.assertRedirects(response, URL_PREFIX + 'profile/')
+        self.assertRedirects(response, '/profile/')
     
     def test_update_profile_password_dissimilar_password(self):
         """
@@ -128,7 +126,7 @@ class ProfileTestCase(TestCase):
             'password2': 'yyyyyy',
             'current_password': 'abcdefg',
         }
-        response = self.client.post(URL_PREFIX + 'profile/password/update/', inputs)
+        response = self.client.post('/profile/password/update/', inputs)
         self.assertTemplateUsed(response, 'registration/profile_password_update.html')
         self.assertFormError(response, 'form', 'password2', "The two password fields didn't match.")
         
@@ -144,7 +142,7 @@ class ProfileTestCase(TestCase):
             'password2': 'newpassword',
             'current_password': 'invalid-current',
         }
-        response = self.client.post(URL_PREFIX + 'profile/password/update/', inputs)
+        response = self.client.post('/profile/password/update/', inputs)
         self.assertTemplateUsed(response, 'registration/profile_password_update.html')
         self.assertFormError(response, 'form', 'current_password', "The password is invalid.")
         
