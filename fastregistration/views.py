@@ -23,7 +23,7 @@ def register(request, success_url=None, form_class=RegistrationForm,
             user = User.objects.create_user(form.cleaned_data["email1"], form.cleaned_data["email1"], form.cleaned_data["password1"])
             
             if profile_callback is not None:
-                profile_callback(user)
+                profile_callback(user=user)
             
             # Login.
             user = auth.authenticate(username=user.username, password=form.cleaned_data["password1"])
