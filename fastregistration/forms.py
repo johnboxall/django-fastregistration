@@ -8,7 +8,7 @@ class RegistrationForm(forms.Form):
     Registration form for new users.
     
     """
-    email     = forms.EmailField(label=_("Email"), max_length=32)
+    email     = forms.EmailField(label=_("Email"), max_length=30)  # username max_length = 30
     password1 = forms.CharField(label=_("Password"), max_length=16, widget=forms.PasswordInput)
     password2 = forms.CharField(label=_("Password Confirmation"), max_length=16, widget=forms.PasswordInput)
     

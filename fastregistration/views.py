@@ -14,7 +14,7 @@ def register(request, next=settings.LOGIN_REDIRECT_URL, form_cls=RegistrationFor
     Register user by e-mail address and log them in.
     
     """
-    if request.method == 'POST':
+    if request.method == "POST":
         form = form_cls(request.POST)
         if form.is_valid():
             user, pw = form.save(request, profile_cb)
@@ -24,11 +24,14 @@ def register(request, next=settings.LOGIN_REDIRECT_URL, form_cls=RegistrationFor
             if login_cb is not None:
                 response = login_cb(response, user)
             return response
+
     else:
         form = form_cls()
-    context = {'form': form}
+
+    context = {'form': form}    
     if extra_context is not None:
-        context = context.update(extra_context)
+        context.update(extra_context)        
+
     return render_to_response(template, context, RequestContext(request))
     
 
