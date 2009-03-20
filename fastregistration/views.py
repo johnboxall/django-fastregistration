@@ -9,7 +9,7 @@ from fastregistration.forms import RegistrationForm
 
 def register(request, next=settings.LOGIN_REDIRECT_URL, form_cls=RegistrationForm,
              profile_cb=None, login_cb=None, template='registration/register.html',
-             extra_context=None):
+             extra_context=None, initial=None):
     """
     Register user by e-mail address and log them in.
     
@@ -26,7 +26,7 @@ def register(request, next=settings.LOGIN_REDIRECT_URL, form_cls=RegistrationFor
             return response
 
     else:
-        form = form_cls()
+        form = form_cls(initial=initial)
 
     context = {'form': form}    
     if extra_context is not None:
